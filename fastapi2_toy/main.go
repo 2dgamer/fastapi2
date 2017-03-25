@@ -9,7 +9,7 @@ import (
 
 func main() {
 	app := fastapi2.New()
-	app.Register(&module1.Service{})
+	app.Register(&module1.Module1{})
 
 	server, err := app.Listen("tcp", "0.0.0.0:0", nil)
 	if err != nil {

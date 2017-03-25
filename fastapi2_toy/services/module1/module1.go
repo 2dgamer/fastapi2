@@ -2,7 +2,7 @@ package module1
 
 import "github.com/funny/link"
 
-type Service struct {
+type Module1 struct {
 }
 
 type AddReq struct {
@@ -14,7 +14,7 @@ type AddRsp struct {
 	C int
 }
 
-func (_ *Service) Add(session *link.Session, req *AddReq) *AddRsp {
+func (_ *Module1) Add(session *link.Session, req *AddReq) *AddRsp {
 	return &AddRsp{
 		req.A + req.B,
 	}

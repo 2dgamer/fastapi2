@@ -2,42 +2,42 @@ package module1
 
 import "encoding/binary"
 import "github.com/funny/gobuf"
-import "fastapi2/fastapi2_toy/services"
+import "github.com/2dgamer/fastapi2"
+import "github.com/2dgamer/fastapi2/fastapi2_toy/services"
 
 type MessageID byte
 
 const (
-	MsgID_Serv MessageID = 0
-	MsgID_Add  MessageID = 1
+	MsgID_Add MessageID = 0
 )
 
-var _ gobuf.Struct = (*Service)(nil)
-
-func (s *Service) Size() int {
-	var size int
-	return size
+func (_ *Module1) NewRequest(id byte) fastapi2.IMessage {
+	switch MessageID(id) {
+	case MsgID_Add:
+		return &AddReq{}
+	}
+	return nil
 }
 
-func (s *Service) Marshal(b []byte) int {
-	var n int
-	return n
+func (_ *Module1) NewResponse(id byte) fastapi2.IMessage {
+	switch MessageID(id) {
+	case MsgID_Add:
+		return &AddRsp{}
+	}
+	return nil
 }
 
-func (s *Service) Unmarshal(b []byte) int {
-	var n int
-	return n
+func (s *Module1) HandleRequest(session *link.Session, req fastapi2.IMessage) {
+	switch MessageID(req.MessageID()) {
+	case MsgID_Add:
+		session.Send(s.Add(session, req.(*AddReq)))
+	default:
+		panic("Unhandled Message Type")
+	}
 }
 
-func (s *Service) MessageID() byte {
-	return byte(MsgID_Serv)
-}
-
-func (s *Service) ServiceID() byte {
+func (s *Module1) ServiceID() byte {
 	return byte(services.ServiceID_Module1)
-}
-
-func (s *Service) Identity() string {
-	return "Module1.Service"
 }
 
 var _ gobuf.Struct = (*AddReq)(nil)
